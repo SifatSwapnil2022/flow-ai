@@ -1,0 +1,23 @@
+generator client {
+  provider = "prisma-client-js" // Fixed: added -js
+  // Note: Custom output is fine, but ensure your lib/prisma.ts 
+  // imports from this specific path!
+  output   = "../lib/generated/prisma" 
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model Workflow {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId      String
+  name        String
+  description String?  // Changed to optional (common for descriptions)
+  flowObject  String   @default("{}")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([userId]) // Added an index for faster queries by user
+}
