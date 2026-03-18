@@ -3,7 +3,8 @@
 import { useGetWorkflowById } from '@/features/use-workflow';
 import { useParams } from 'next/navigation';
 import { Spinner } from '@/components/ui/spinner';
-import Header from '../../_common/header';
+import Header from '@/app/(routes)/workflow/[id]/_common/header';
+import { WorkflowProvider } from '@/context/workflow-context';
 
 const Page = () => {
     const params = useParams();
@@ -24,15 +25,17 @@ const Page = () => {
 
     return (
         <div className='min-h-screen bg-background'>
+            <WorkflowProvider>
             <div className='flex flex-col h-screen relative'>
                 <Header
-                isLoading={isPending}
+                isLoading = {isPending}
                     name ={workflow?.name}
                     workflowId={workflow?.id}
                 />
                 <div className='flex relative overflow-hidden'>
                 </div>
             </div>
+            </WorkflowProvider>
         </div>
     );
 }

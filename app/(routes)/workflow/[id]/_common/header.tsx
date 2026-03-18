@@ -5,8 +5,8 @@ import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { ChevronLeft, Code, MoreHorizontal, Pencil, Play } from 'lucide-react';
 import Link from 'next/link';
-import React, { useState } from 'react'
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'; // ✅ single import source
+import { useWorkflowContext } from '@/context/workflow-context'; // ✅ correct name
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 
 type PropsType = {
     isLoading?: boolean;
@@ -15,7 +15,7 @@ type PropsType = {
 }
 
 const Header = ({ isLoading, name }: PropsType) => {
-    const [view, setView] = useState<string>("edit");
+    const { view, setView } = useWorkflowContext(); // ✅ object destructure
 
     const tabs = [
         { id: "edit", label: "Edit", icon: Pencil },
@@ -34,7 +34,7 @@ const Header = ({ isLoading, name }: PropsType) => {
                 <div className='flex h-14 items-center justify-between px-4'>
                     <Link
                         href="/workflow"
-                        className={`flex items-center gap-3 bg-card ${zIndex} py-1 px-1 rounded-lg`} // ✅ backticks for interpolation
+                        className={`flex items-center gap-3 bg-card ${zIndex} py-1 px-1 rounded-lg`}
                     >
                         <Button variant="secondary" size="icon" className='size-8!'>
                             <ChevronLeft className='size-4' />
@@ -56,9 +56,9 @@ const Header = ({ isLoading, name }: PropsType) => {
                             return (
                                 <button
                                     key={tab.id}
-                                    onClick={() => handleSetView(tab.id)} // ✅ removed duplicate onClick
+                                    onClick={() => handleSetView(tab.id)}
                                     className={cn(
-                                        'flex items-center gap-2 rounded-md px-3 py-1.5 text-sm font-medium transition-colors', // ✅ fixed rounded-mdpx-3
+                                        'flex items-center gap-2 rounded-md px-3 py-1.5 text-sm font-medium transition-colors',
                                         view === tab.id ? "bg-primary text-primary-foreground" : "hover:bg-accent"
                                     )}
                                 >
@@ -69,8 +69,8 @@ const Header = ({ isLoading, name }: PropsType) => {
                         })}
                     </div>
 
-                    <div className='flex items-center gap-2 bg-card p-1 rounded-lg'> {/* ✅ fixed runded-lg */}
-                        <DropdownMenu> {/* ✅ fixed structure */}
+                    <div className='flex items-center gap-2 bg-card p-1 rounded-lg'>
+                        <DropdownMenu>
                             <DropdownMenuTrigger asChild>
                                 <Button variant="ghost" size="icon" className='size-8'>
                                     <MoreHorizontal className='size-4' />
