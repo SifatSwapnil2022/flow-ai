@@ -1,4 +1,5 @@
-import { Workflow } from "@/lib/generated/prisma";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import {Workflow} from "@/lib/generated/prisma/client";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import axios, { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
@@ -8,6 +9,12 @@ type CreateWorkflowPayload = {
     name: string;
     description?: string;
 };
+
+type WorkflowType = {
+    id: string;
+    name: string;
+    flowObject: any;
+}
 
 type ApiResponse<T> = {
     success: boolean;
@@ -43,4 +50,18 @@ export const useCreateWorkflow = () => {
             toast.error("Failed to create workflow");
         },
     });
+};
+
+
+export const useGetWorkflowById = (WorkflowId: string) => {
+    return useQuery({
+        queryKey: ["workflow", WorkflowId],
+        queryFn: async () => {
+            return await axios
+                .get<{ data: WorkflowType }>(`/api/workflow/${WorkflowId}`)
+                .then((res) => res.data.data);
+    },
+        enabled: !!WorkflowId, // Only run the query if WorkflowId is truthy
+});
+
 };
