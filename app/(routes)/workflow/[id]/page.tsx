@@ -5,6 +5,7 @@ import { useParams } from 'next/navigation';
 import { Spinner } from '@/components/ui/spinner';
 import Header from '@/app/(routes)/workflow/[id]/_common/header';
 import { WorkflowProvider } from '@/context/workflow-context';
+import WorkflowCanvas from './_common/workflow-canvas';
 
 const Page = () => {
     const params = useParams();
@@ -33,6 +34,13 @@ const Page = () => {
                     workflowId={workflow?.id}
                 />
                 <div className='flex relative overflow-hidden'>
+                    { isPending ? (
+                        <div className='flex items-center justify-center h-full w-full'>
+                            <Spinner className='size-12 text-primary' />
+                        </div>
+                    ) : (
+                        <WorkflowCanvas />
+                    )}
                 </div>
             </div>
             </WorkflowProvider>
